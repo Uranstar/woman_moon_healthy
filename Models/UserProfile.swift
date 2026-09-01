@@ -55,10 +55,14 @@ final class UserProfile {
         Calendar.current.dateComponents([.year], from: birthDate, to: Date()).year ?? 0
     }
 
+    /// BMI（身体质量指数），基于**当前**体重计算。
+    ///
+    /// 此前误用 `targetWeight`（目标体重）计算，且未设目标体重时恒为 nil，
+    /// 导致营养建议与 AI 上下文拿到错误的身体数据。
     var bmi: Double? {
-        guard let latestWeight = targetWeight else { return nil }
+        guard height > 0, weight > 0 else { return nil }
         let heightM = height / 100
-        return latestWeight / (heightM * heightM)
+        return weight / (heightM * heightM)
     }
 
     var currentCyclePhase: CyclePhase {

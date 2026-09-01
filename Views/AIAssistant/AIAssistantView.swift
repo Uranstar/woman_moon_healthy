@@ -1,7 +1,9 @@
 import SwiftUI
+import SwiftData
 
 struct AIAssistantView: View {
     @EnvironmentObject private var appState: AppState
+    @Query private var userProfiles: [UserProfile]
     @State private var messages: [ChatMessage] = [
         ChatMessage(
             id: 0,
@@ -140,10 +142,8 @@ struct AIAssistantView: View {
         Task {
             do {
                 let context = AIChatContext(
-                    cyclePhase: appState.currentCyclePhase,
-                    age: 25,
-                    goals: appState.userGoals,
-                    bmi: 22.0
+                    profile: userProfiles.first,
+                    cyclePhase: appState.currentCyclePhase
                 )
                 let reply = try await AIService.shared.chat(
                     userMessage: trimmed,

@@ -1,4 +1,5 @@
 import Foundation
+import SwiftData
 
 /// AI 服务 — DeepSeek API 驱动，健康分析、营养解读、智能助手
 final class AIService {
@@ -127,9 +128,9 @@ final class AIService {
 
         用户当前信息：
         - 周期阶段：\(context.cyclePhase.rawValue)
-        - 年龄：\(context.age)岁
-        - 运动目标：\(context.goals.map(\.rawValue).joined(separator: "、"))
-        - BMI：\(String(format: "%.1f", context.bmi ?? 0))
+        - 年龄：\(context.age.map { "\($0)岁" } ?? "未填写")
+        - 运动目标：\(context.goals.isEmpty ? "未填写" : context.goals.map(\.rawValue).joined(separator: "、"))
+        - BMI：\(context.bmi.map { String(format: "%.1f", $0) } ?? "未填写")
         """
 
         return try await sendMessage(systemPrompt: systemPrompt, userMessage: userMessage, maxTokens: 1500)
@@ -214,9 +215,29 @@ struct EmotionAnalysis: Codable {
 
 struct AIChatContext {
     let cyclePhase: CyclePhase
-    let age: Int
+    let age: Int?
     let goals: [Goal]
     let bmi: Double?
+
+    init(cyclePhase: CyclePhase, age: Int?, goals: [Goal], bmi: Double?) {
+        self.cyclePhase = cyclePhase
+        self.age = age
+        self.goals = goals
+        self.bmi = bmi
+    }
+
+    /// 从用户档案构建上下文。
+    ///
+    /// 此前调用方把年龄、BMI 硬编码成 25 岁 / 22.0，模型会基于这些虚构数据给出建议。
+    /// 档案缺失时这里传 nil，让模型看到「未填写」而不是假数字。
+    init(profile: UserProfile?, cyclePhase: CyclePhase) {
+        self.init(
+            cyclePhase: cyclePhase,
+            age: profile?.age,
+            goals: profile?.goals.isEmpty == false ? (profile?.goals ?? []) : [.maintain],
+            bmi: profile?.bmi
+        )
+    }
 }
 
 // MARK: - 错误

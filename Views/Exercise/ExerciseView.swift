@@ -241,6 +241,7 @@ struct StatItemView: View {
 struct PlanGeneratorView: View {
     @EnvironmentObject private var appState: AppState
     @Environment(\.dismiss) private var dismiss
+    @Query private var userProfiles: [UserProfile]
     let onSave: ([ExercisePlan]) -> Void
     @State private var selectedFocus = "综合"
     @State private var generating = false
@@ -328,8 +329,8 @@ struct PlanGeneratorView: View {
         generating = true
         Task {
             do {
-                let context = AIChatContext(cyclePhase: appState.currentCyclePhase, age: 25,
-                                            goals: appState.userGoals.isEmpty ? [.maintain] : appState.userGoals, bmi: 22)
+                let context = AIChatContext(profile: userProfiles.first,
+                                            cyclePhase: appState.currentCyclePhase)
                 let prompt = """
                 请为一位处于\(context.cyclePhase.rawValue)的女性生成一周运动计划，侧重\(selectedFocus)。
                 周期长度28天，经期5天。返回JSON格式：

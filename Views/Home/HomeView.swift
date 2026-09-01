@@ -404,6 +404,7 @@ struct DetailRow: View {
 // MARK: - 节气+饮食分析合并页
 struct SeasonalWellnessDietView: View {
     @EnvironmentObject private var appState: AppState
+    @Query private var userProfiles: [UserProfile]
     @State private var currentTerm: SolarTerm?
     @State private var wellnessAdvice: WellnessAdvice?
     @State private var aiDietAdvice: String?
@@ -468,8 +469,8 @@ struct SeasonalWellnessDietView: View {
         loadingAI = true
         Task {
             do {
-                let context = AIChatContext(cyclePhase: appState.currentCyclePhase, age: 25,
-                                            goals: appState.userGoals.isEmpty ? [.maintain] : appState.userGoals, bmi: 22)
+                let context = AIChatContext(profile: userProfiles.first,
+                                            cyclePhase: appState.currentCyclePhase)
                 let prompt = "我现在处于\(context.cyclePhase.rawValue)，当前节气是\(advice.termName)，推荐食材有\(advice.seasonalFoods.joined(separator: "、"))。请结合我的周期阶段和节气，给出今日饮食建议，包括推荐菜式和注意事项。"
                 aiDietAdvice = try await AIService.shared.chat(userMessage: prompt, context: context)
             } catch { aiDietAdvice = "无法生成建议，请检查网络。" }
