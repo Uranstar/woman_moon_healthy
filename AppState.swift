@@ -14,6 +14,10 @@ class AppState: ObservableObject {
     @Published var stressValue: Double = 15
     @Published var registrationDate: Date?
 
+    /// 非 nil 表示 SwiftData 磁盘存储不可用、已降级为内存存储。
+    /// 此时用户记录的数据不会被保存，必须由界面明确告知。
+    @Published var storageWarning: String?
+
     func completeOnboarding() {
         isOnboarded = true
         registrationDate = Date()

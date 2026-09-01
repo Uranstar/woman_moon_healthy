@@ -9,18 +9,24 @@ struct ContentView: View {
     private var predictionRecords: [CycleRecord]
 
     var body: some View {
-        Group {
-            if appState.isOnboarded, let profile = userProfiles.first {
-                MainTabView()
-                    .onAppear {
-                        syncAppState(profile: profile)
-                        ensurePredictionsExist(profile: profile)
-                    }
-                    .onChange(of: profile.lastCycleStartDate) { _, _ in
-                        syncAppState(profile: profile)
-                    }
-            } else {
-                OnboardingView()
+        VStack(spacing: 0) {
+            if let warning = appState.storageWarning {
+                StorageWarningBanner(message: warning)
+            }
+
+            Group {
+                if appState.isOnboarded, let profile = userProfiles.first {
+                    MainTabView()
+                        .onAppear {
+                            syncAppState(profile: profile)
+                            ensurePredictionsExist(profile: profile)
+                        }
+                        .onChange(of: profile.lastCycleStartDate) { _, _ in
+                            syncAppState(profile: profile)
+                        }
+                } else {
+                    OnboardingView()
+                }
             }
         }
     }
@@ -88,6 +94,31 @@ struct MainTabView: View {
             }
         }
         .tint(Color(hex: "#E91E63"))
+    }
+}
+
+// MARK: - 存储降级提示
+/// 磁盘存储初始化失败时置顶显示。此时数据只存在于内存，退出即丢失，
+/// 必须让用户看见，而不是像旧实现那样静默降级。
+private struct StorageWarningBanner: View {
+    let message: String
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 8) {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .font(.subheadline)
+            VStack(alignment: .leading, spacing: 2) {
+                Text("数据暂时无法保存")
+                    .font(.subheadline).fontWeight(.semibold)
+                Text("本地存储初始化失败，本次记录的内容会在退出后丢失。原因：\(message)")
+                    .font(.caption)
+            }
+        }
+        .foregroundStyle(.white)
+        .padding(.horizontal, 12)
+        .padding(.vertical, 10)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color(hex: "#D32F2F"))
     }
 }
 
