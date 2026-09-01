@@ -1,0 +1,36 @@
+# Xcode 用户数据与构建产物
+build/
+DerivedData/
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.xccheckout
+*.moved-aside
+xcuserdata/
+**/*.xcuserstate
+*.hmap
+*.ipa
+*.dSYM.zip
+
+# Swift Package Manager
+.swiftpm/
+.build/
+
+# 打包的第三方依赖（当前无依赖，预留）
+Carthage/Build/
+Pods/
+
+# macOS
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+
+# 本地密钥 / 环境配置（切勿提交 API Key）
+.env
+*.xcconfig.local
+secrets.*
+
+# 工作区临时目录
+.workbuddy/

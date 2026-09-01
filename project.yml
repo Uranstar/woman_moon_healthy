@@ -1,0 +1,61 @@
+# XcodeGen 项目配置文件
+# 生成: cd women-moon && xcodegen generate
+name: WomenMoon
+options:
+  bundleIdPrefix: com.womenmoon
+  deploymentTarget:
+    iOS: "17.0"
+  xcodeVersion: "15.0"
+  generateEmptyDirectories: true
+  groupSortPosition: top
+  createIntermediateGroups: false
+
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    GENERATE_INFOPLIST_FILE: YES
+    INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+    INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents: YES
+    INFOPLIST_KEY_UILaunchScreen_Generation: YES
+    INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone: UIInterfaceOrientationPortrait
+    INFOPLIST_KEY_CFBundleName: "月舒"
+    INFOPLIST_KEY_CFBundleDisplayName: "月舒"
+
+targets:
+  WomenMoon:
+    type: application
+    platform: iOS
+    sources:
+      - path: .
+        type: group
+        name: WomenMoon
+        excludes:
+          - "project.yml"
+          - "*.md"
+          - "WomenMoon.xcodeproj"
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.womenmoon.app
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_NSHealthShareUsageDescription: "月舒需要访问你的健康数据，用于同步经期、体重、步数等信息，帮助你更好地管理健康。"
+        INFOPLIST_KEY_NSHealthUpdateUsageDescription: "月舒需要写入经期和体重数据到 Apple Health。"
+        INFOPLIST_KEY_NSCameraUsageDescription: "用于拍摄食物照片和病例记录。"
+        INFOPLIST_KEY_NSPhotoLibraryUsageDescription: "用于导入食物照片和病例图片。"
+        CODE_SIGN_IDENTITY[sdk=iphonesimulator*]: ""
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: ""
+        CODE_SIGN_ENTITLEMENTS: WomenMoon.entitlements
+      configs:
+        Debug:
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: DEBUG
+        Release:
+          SWIFT_COMPILATION_MODE: wholemodule
+          SWIFT_OPTIMIZATION_LEVEL: "-O"
+    dependencies: []
+    scheme:
+      testTargets: []
+      gatherCoverageData: false
+      environmentVariables:
+        - variable: DEEPSEEK_API_KEY
+          value: ""
+          isEnabled: true

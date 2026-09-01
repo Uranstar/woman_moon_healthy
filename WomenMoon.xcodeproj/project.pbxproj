@@ -1,0 +1,621 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		04A36317CC9EACA39437A62E /* CycleCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A1568F8828AB921155337B /* CycleCalculator.swift */; };
+		0E10BA6578EEB6681E6FF291 /* EmotionTrackerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC470A82CBC3C4A016A02AB /* EmotionTrackerView.swift */; };
+		1EE67695E1B7052FB2B5631C /* FoodDatabase.json in Resources */ = {isa = PBXBuildFile; fileRef = 3974681B487B722FA8342F87 /* FoodDatabase.json */; };
+		20DF28C0EE790EF53E0C87A9 /* ExercisePlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5B64CFC9B2370FB93C1814 /* ExercisePlan.swift */; };
+		2297B70979EE6B4E9BA94589 /* HealthMetricsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900F1DA54146BF2DABDF6770 /* HealthMetricsView.swift */; };
+		253BC1D88993D6B17B74A0C0 /* AIAssistantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A38CFB838FF7E456FC7EDF /* AIAssistantView.swift */; };
+		25AB0641B993F9CB0956F2C2 /* AIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3400530035844BB7BE621AC /* AIService.swift */; };
+		26A38B17FB75397AB3D5D132 /* CloudKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84761D0AC99505D23E21E8B4 /* CloudKitService.swift */; };
+		2774ABF10AA819B8BEB1D43B /* MedicalRecordsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E89DFC9281BD5CB3EC2CBC3C /* MedicalRecordsView.swift */; };
+		2C54E4D33FF4088EE7389B93 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5236108068234CE2D84D2E0 /* HomeView.swift */; };
+		37846460279487E4916A3977 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2076D340E9D13E6D1FFEFBC /* AppState.swift */; };
+		46D5F238335854BFEA31A974 /* NutritionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20132290473105987C4A7FE /* NutritionView.swift */; };
+		5E99BE9EB33AB5B72CF0F8F2 /* MedicalRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAE133855FAD07238F081E5 /* MedicalRecord.swift */; };
+		5EBC97304520E7016E1DB147 /* CycleRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6BB024B3F30A9E45931583 /* CycleRecord.swift */; };
+		6F9143D919993EA5E6CB3354 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBD2C7F92E121BDCE6CBADAB /* ContentView.swift */; };
+		70E2D34346808E828F69F03A /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ED41C83A54907AFBD728F32 /* OnboardingView.swift */; };
+		7D1EC2377E0A755F693D68E7 /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFADDA3D2EE8B5F285872BAF /* DateExtensions.swift */; };
+		81AEE976F0F34B7E01BCE5C3 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2D7C922E4EDFDE8B43F1DE /* Constants.swift */; };
+		83AB97BC3DBB81FEEA7E0B5E /* NutritionCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFFCB155AC14E86AF961DEC3 /* NutritionCalculator.swift */; };
+		88B09057F0922D81E6D5C65A /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D8C58992E9A250E9C48CE7 /* StringExtensions.swift */; };
+		89D8DE465F244AF83035ED11 /* ExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431F66A04F5DB3A6F07E91B1 /* ExerciseView.swift */; };
+		8D490DB3AB62AAFD03CF70D1 /* SupplementRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FD7AC8DFE493C2F61B129A2 /* SupplementRecord.swift */; };
+		980BE94F9EF8983D995213C6 /* HealthMetric.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E900C38FA185CACC3EF505 /* HealthMetric.swift */; };
+		9E6789E453E7DDDCC712BE6F /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294E7F6E4E97A54532CF65A3 /* ProfileView.swift */; };
+		A0D9E8EF8E84D2D9DF6342EC /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA7BA311B0F4C48194A13548 /* HealthKitService.swift */; };
+		A404603BEEC35B1C952080B2 /* SeasonalWellnessService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CDE07167A4F135587C2729 /* SeasonalWellnessService.swift */; };
+		A977AE1F0F9488DF0FC91662 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80787C71433AC138E08E922F /* SettingsView.swift */; };
+		AFDD641A22AF8B7AD9189425 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88F234C4BD562E9DB3BDC17 /* ViewExtensions.swift */; };
+		B1C83F771B9C8412AD441ECE /* FoodItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 853C3A7A986DB371A407EBDA /* FoodItem.swift */; };
+		BDC2C6614D5898D19BC45171 /* SeasonalWellnessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FDABE3AAA7C4A06B25F5AC /* SeasonalWellnessView.swift */; };
+		DCB3F1FB648ADF30E369B90B /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A7CDB9B20461714E1DE798 /* UserProfile.swift */; };
+		EB3EFC5A9433EF410F690D2A /* ColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB930DC6D61F2D7287950BC4 /* ColorExtensions.swift */; };
+		F250382ECFEDF2E070DA127A /* CycleTrackerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89AF37B028CFDF8537019AB7 /* CycleTrackerView.swift */; };
+		FA1D47EACCA0E877C231F308 /* WomenMoonApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82DB4CE6F04262C7FB969315 /* WomenMoonApp.swift */; };
+		FB62D26464038388371F122A /* SeasonalTerms.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E450D4218D2316AE3767D46 /* SeasonalTerms.swift */; };
+		FB6EFE6FD7FCF81615208EED /* EmotionRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D95EEF2FBD928D6B959716 /* EmotionRecord.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		01A7CDB9B20461714E1DE798 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
+		1BC470A82CBC3C4A016A02AB /* EmotionTrackerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmotionTrackerView.swift; sourceTree = "<group>"; };
+		20D95EEF2FBD928D6B959716 /* EmotionRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmotionRecord.swift; sourceTree = "<group>"; };
+		27E900C38FA185CACC3EF505 /* HealthMetric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthMetric.swift; sourceTree = "<group>"; };
+		294E7F6E4E97A54532CF65A3 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		2ED41C83A54907AFBD728F32 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		3974681B487B722FA8342F87 /* FoodDatabase.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = FoodDatabase.json; sourceTree = "<group>"; };
+		3B2D7C922E4EDFDE8B43F1DE /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		3E450D4218D2316AE3767D46 /* SeasonalTerms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeasonalTerms.swift; sourceTree = "<group>"; };
+		431F66A04F5DB3A6F07E91B1 /* ExerciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseView.swift; sourceTree = "<group>"; };
+		5FD7AC8DFE493C2F61B129A2 /* SupplementRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupplementRecord.swift; sourceTree = "<group>"; };
+		6A5B64CFC9B2370FB93C1814 /* ExercisePlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExercisePlan.swift; sourceTree = "<group>"; };
+		6E6BB024B3F30A9E45931583 /* CycleRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CycleRecord.swift; sourceTree = "<group>"; };
+		7E90B2C34D93AE7E1F970AF5 /* WomenMoon.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WomenMoon.entitlements; sourceTree = "<group>"; };
+		80787C71433AC138E08E922F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		82DB4CE6F04262C7FB969315 /* WomenMoonApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WomenMoonApp.swift; sourceTree = "<group>"; };
+		84761D0AC99505D23E21E8B4 /* CloudKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitService.swift; sourceTree = "<group>"; };
+		84CDE07167A4F135587C2729 /* SeasonalWellnessService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeasonalWellnessService.swift; sourceTree = "<group>"; };
+		853C3A7A986DB371A407EBDA /* FoodItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodItem.swift; sourceTree = "<group>"; };
+		87D8C58992E9A250E9C48CE7 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
+		89AF37B028CFDF8537019AB7 /* CycleTrackerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CycleTrackerView.swift; sourceTree = "<group>"; };
+		900F1DA54146BF2DABDF6770 /* HealthMetricsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthMetricsView.swift; sourceTree = "<group>"; };
+		A2076D340E9D13E6D1FFEFBC /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		AB930DC6D61F2D7287950BC4 /* ColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtensions.swift; sourceTree = "<group>"; };
+		B0A38CFB838FF7E456FC7EDF /* AIAssistantView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIAssistantView.swift; sourceTree = "<group>"; };
+		B5236108068234CE2D84D2E0 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		C3400530035844BB7BE621AC /* AIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIService.swift; sourceTree = "<group>"; };
+		CAAE133855FAD07238F081E5 /* MedicalRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalRecord.swift; sourceTree = "<group>"; };
+		DA7BA311B0F4C48194A13548 /* HealthKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitService.swift; sourceTree = "<group>"; };
+		E1A1568F8828AB921155337B /* CycleCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CycleCalculator.swift; sourceTree = "<group>"; };
+		E1FDABE3AAA7C4A06B25F5AC /* SeasonalWellnessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeasonalWellnessView.swift; sourceTree = "<group>"; };
+		E88F234C4BD562E9DB3BDC17 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
+		E89DFC9281BD5CB3EC2CBC3C /* MedicalRecordsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalRecordsView.swift; sourceTree = "<group>"; };
+		EBD2C7F92E121BDCE6CBADAB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		EFADDA3D2EE8B5F285872BAF /* DateExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensions.swift; sourceTree = "<group>"; };
+		EFFCB155AC14E86AF961DEC3 /* NutritionCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionCalculator.swift; sourceTree = "<group>"; };
+		F20132290473105987C4A7FE /* NutritionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionView.swift; sourceTree = "<group>"; };
+		F46AD4212324091B73890017 /* WomenMoon.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = WomenMoon.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		140DA7494C9B9D83B9379F1D /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		147F3CC0FB3B9FA551EB6BDC /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				6E6BB024B3F30A9E45931583 /* CycleRecord.swift */,
+				20D95EEF2FBD928D6B959716 /* EmotionRecord.swift */,
+				6A5B64CFC9B2370FB93C1814 /* ExercisePlan.swift */,
+				853C3A7A986DB371A407EBDA /* FoodItem.swift */,
+				27E900C38FA185CACC3EF505 /* HealthMetric.swift */,
+				CAAE133855FAD07238F081E5 /* MedicalRecord.swift */,
+				5FD7AC8DFE493C2F61B129A2 /* SupplementRecord.swift */,
+				01A7CDB9B20461714E1DE798 /* UserProfile.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		2E5EF8598F6BFDBB2EB9AA9F /* AIAssistant */ = {
+			isa = PBXGroup;
+			children = (
+				B0A38CFB838FF7E456FC7EDF /* AIAssistantView.swift */,
+			);
+			path = AIAssistant;
+			sourceTree = "<group>";
+		};
+		32D7E25BF959F8BD19D42981 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				AB930DC6D61F2D7287950BC4 /* ColorExtensions.swift */,
+				3B2D7C922E4EDFDE8B43F1DE /* Constants.swift */,
+				EFADDA3D2EE8B5F285872BAF /* DateExtensions.swift */,
+				EFFCB155AC14E86AF961DEC3 /* NutritionCalculator.swift */,
+				3E450D4218D2316AE3767D46 /* SeasonalTerms.swift */,
+				87D8C58992E9A250E9C48CE7 /* StringExtensions.swift */,
+				E88F234C4BD562E9DB3BDC17 /* ViewExtensions.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		32E6FED0C646EB283A5AEAFF /* Components */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		39A3A640862FCF10BF488B8D /* MedicalRecords */ = {
+			isa = PBXGroup;
+			children = (
+				E89DFC9281BD5CB3EC2CBC3C /* MedicalRecordsView.swift */,
+			);
+			path = MedicalRecords;
+			sourceTree = "<group>";
+		};
+		511C1695123D9B4DA0C0B2C3 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				3974681B487B722FA8342F87 /* FoodDatabase.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		53F8E87780F2AB717492F85C /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				C3400530035844BB7BE621AC /* AIService.swift */,
+				84761D0AC99505D23E21E8B4 /* CloudKitService.swift */,
+				E1A1568F8828AB921155337B /* CycleCalculator.swift */,
+				DA7BA311B0F4C48194A13548 /* HealthKitService.swift */,
+				84CDE07167A4F135587C2729 /* SeasonalWellnessService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		5471B8827604E58971F7F97A /* Exercise */ = {
+			isa = PBXGroup;
+			children = (
+				431F66A04F5DB3A6F07E91B1 /* ExerciseView.swift */,
+			);
+			path = Exercise;
+			sourceTree = "<group>";
+		};
+		580A61D9281136ABFE6B7C74 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F46AD4212324091B73890017 /* WomenMoon.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6ABEBC8BC4A2756CAE1E5223 /* SeasonalWellness */ = {
+			isa = PBXGroup;
+			children = (
+				E1FDABE3AAA7C4A06B25F5AC /* SeasonalWellnessView.swift */,
+			);
+			path = SeasonalWellness;
+			sourceTree = "<group>";
+		};
+		73D9D145C884B10BC0050022 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2E5EF8598F6BFDBB2EB9AA9F /* AIAssistant */,
+				32E6FED0C646EB283A5AEAFF /* Components */,
+				D383D1FF338E6DD72DA6A2F6 /* Cycle */,
+				F6511A30CC666323BBE34A63 /* Emotion */,
+				5471B8827604E58971F7F97A /* Exercise */,
+				A018C3CDE2CE30892047BEB4 /* Health */,
+				CF643F470482E4C27AC2E2FB /* Home */,
+				39A3A640862FCF10BF488B8D /* MedicalRecords */,
+				FBEBF5BAEE77AC901A84DF31 /* Nutrition */,
+				A14F69572FA8FAF0C3F3E887 /* Onboarding */,
+				6ABEBC8BC4A2756CAE1E5223 /* SeasonalWellness */,
+				D7B51DB9410126D5F826B206 /* Settings */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		77DB1FF3122789EEAABA405B /* WomenMoon */ = {
+			isa = PBXGroup;
+			children = (
+				147F3CC0FB3B9FA551EB6BDC /* Models */,
+				511C1695123D9B4DA0C0B2C3 /* Resources */,
+				53F8E87780F2AB717492F85C /* Services */,
+				32D7E25BF959F8BD19D42981 /* Utils */,
+				140DA7494C9B9D83B9379F1D /* ViewModels */,
+				73D9D145C884B10BC0050022 /* Views */,
+				A2076D340E9D13E6D1FFEFBC /* AppState.swift */,
+				EBD2C7F92E121BDCE6CBADAB /* ContentView.swift */,
+				7E90B2C34D93AE7E1F970AF5 /* WomenMoon.entitlements */,
+				82DB4CE6F04262C7FB969315 /* WomenMoonApp.swift */,
+			);
+			name = WomenMoon;
+			path = .;
+			sourceTree = "<group>";
+		};
+		A018C3CDE2CE30892047BEB4 /* Health */ = {
+			isa = PBXGroup;
+			children = (
+				900F1DA54146BF2DABDF6770 /* HealthMetricsView.swift */,
+			);
+			path = Health;
+			sourceTree = "<group>";
+		};
+		A14F69572FA8FAF0C3F3E887 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				2ED41C83A54907AFBD728F32 /* OnboardingView.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		A2CC77AA3EC8A634C4293576 = {
+			isa = PBXGroup;
+			children = (
+				147F3CC0FB3B9FA551EB6BDC /* Models */,
+				511C1695123D9B4DA0C0B2C3 /* Resources */,
+				53F8E87780F2AB717492F85C /* Services */,
+				32D7E25BF959F8BD19D42981 /* Utils */,
+				140DA7494C9B9D83B9379F1D /* ViewModels */,
+				73D9D145C884B10BC0050022 /* Views */,
+				77DB1FF3122789EEAABA405B /* WomenMoon */,
+				580A61D9281136ABFE6B7C74 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CF643F470482E4C27AC2E2FB /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				B5236108068234CE2D84D2E0 /* HomeView.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		D383D1FF338E6DD72DA6A2F6 /* Cycle */ = {
+			isa = PBXGroup;
+			children = (
+				89AF37B028CFDF8537019AB7 /* CycleTrackerView.swift */,
+			);
+			path = Cycle;
+			sourceTree = "<group>";
+		};
+		D7B51DB9410126D5F826B206 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				294E7F6E4E97A54532CF65A3 /* ProfileView.swift */,
+				80787C71433AC138E08E922F /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		F6511A30CC666323BBE34A63 /* Emotion */ = {
+			isa = PBXGroup;
+			children = (
+				1BC470A82CBC3C4A016A02AB /* EmotionTrackerView.swift */,
+			);
+			path = Emotion;
+			sourceTree = "<group>";
+		};
+		FBEBF5BAEE77AC901A84DF31 /* Nutrition */ = {
+			isa = PBXGroup;
+			children = (
+				F20132290473105987C4A7FE /* NutritionView.swift */,
+			);
+			path = Nutrition;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1F99FFC112B4AB14C395A687 /* WomenMoon */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3BEC9929CF7CC76FC9C9D3E9 /* Build configuration list for PBXNativeTarget "WomenMoon" */;
+			buildPhases = (
+				7776E016EDBA8285C53F7169 /* Sources */,
+				BE44B2C377E43BD9F643BF1C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WomenMoon;
+			packageProductDependencies = (
+			);
+			productName = WomenMoon;
+			productReference = F46AD4212324091B73890017 /* WomenMoon.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C9E8BD5D4079F3199BB6F765 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					1F99FFC112B4AB14C395A687 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = B7B32AD5678992CE8BFD8C21 /* Build configuration list for PBXProject "WomenMoon" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = A2CC77AA3EC8A634C4293576;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 580A61D9281136ABFE6B7C74 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1F99FFC112B4AB14C395A687 /* WomenMoon */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BE44B2C377E43BD9F643BF1C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1EE67695E1B7052FB2B5631C /* FoodDatabase.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7776E016EDBA8285C53F7169 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				253BC1D88993D6B17B74A0C0 /* AIAssistantView.swift in Sources */,
+				25AB0641B993F9CB0956F2C2 /* AIService.swift in Sources */,
+				37846460279487E4916A3977 /* AppState.swift in Sources */,
+				26A38B17FB75397AB3D5D132 /* CloudKitService.swift in Sources */,
+				EB3EFC5A9433EF410F690D2A /* ColorExtensions.swift in Sources */,
+				81AEE976F0F34B7E01BCE5C3 /* Constants.swift in Sources */,
+				6F9143D919993EA5E6CB3354 /* ContentView.swift in Sources */,
+				04A36317CC9EACA39437A62E /* CycleCalculator.swift in Sources */,
+				5EBC97304520E7016E1DB147 /* CycleRecord.swift in Sources */,
+				F250382ECFEDF2E070DA127A /* CycleTrackerView.swift in Sources */,
+				7D1EC2377E0A755F693D68E7 /* DateExtensions.swift in Sources */,
+				FB6EFE6FD7FCF81615208EED /* EmotionRecord.swift in Sources */,
+				0E10BA6578EEB6681E6FF291 /* EmotionTrackerView.swift in Sources */,
+				20DF28C0EE790EF53E0C87A9 /* ExercisePlan.swift in Sources */,
+				89D8DE465F244AF83035ED11 /* ExerciseView.swift in Sources */,
+				B1C83F771B9C8412AD441ECE /* FoodItem.swift in Sources */,
+				A0D9E8EF8E84D2D9DF6342EC /* HealthKitService.swift in Sources */,
+				980BE94F9EF8983D995213C6 /* HealthMetric.swift in Sources */,
+				2297B70979EE6B4E9BA94589 /* HealthMetricsView.swift in Sources */,
+				2C54E4D33FF4088EE7389B93 /* HomeView.swift in Sources */,
+				5E99BE9EB33AB5B72CF0F8F2 /* MedicalRecord.swift in Sources */,
+				2774ABF10AA819B8BEB1D43B /* MedicalRecordsView.swift in Sources */,
+				83AB97BC3DBB81FEEA7E0B5E /* NutritionCalculator.swift in Sources */,
+				46D5F238335854BFEA31A974 /* NutritionView.swift in Sources */,
+				70E2D34346808E828F69F03A /* OnboardingView.swift in Sources */,
+				9E6789E453E7DDDCC712BE6F /* ProfileView.swift in Sources */,
+				FB62D26464038388371F122A /* SeasonalTerms.swift in Sources */,
+				A404603BEEC35B1C952080B2 /* SeasonalWellnessService.swift in Sources */,
+				BDC2C6614D5898D19BC45171 /* SeasonalWellnessView.swift in Sources */,
+				A977AE1F0F9488DF0FC91662 /* SettingsView.swift in Sources */,
+				88B09057F0922D81E6D5C65A /* StringExtensions.swift in Sources */,
+				8D490DB3AB62AAFD03CF70D1 /* SupplementRecord.swift in Sources */,
+				DCB3F1FB648ADF30E369B90B /* UserProfile.swift in Sources */,
+				AFDD641A22AF8B7AD9189425 /* ViewExtensions.swift in Sources */,
+				FA1D47EACCA0E877C231F308 /* WomenMoonApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		2EAC59BFEB888CB783705A6F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = WomenMoon.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphonesimulator*]" = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "用于拍摄食物照片和病例记录。";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "月舒需要访问你的健康数据，用于同步经期、体重、步数等信息，帮助你更好地管理健康。";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "月舒需要写入经期和体重数据到 Apple Health。";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "用于导入食物照片和病例图片。";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.womenmoon.app;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		433EEA428D503A7BADC2D71D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "月舒";
+				INFOPLIST_KEY_CFBundleName = "月舒";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		EA066FAE705C67E4811B7CBA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "月舒";
+				INFOPLIST_KEY_CFBundleName = "月舒";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		F2BA52878909954129ADB119 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = WomenMoon.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphonesimulator*]" = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "用于拍摄食物照片和病例记录。";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "月舒需要访问你的健康数据，用于同步经期、体重、步数等信息，帮助你更好地管理健康。";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "月舒需要写入经期和体重数据到 Apple Health。";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "用于导入食物照片和病例图片。";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.womenmoon.app;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3BEC9929CF7CC76FC9C9D3E9 /* Build configuration list for PBXNativeTarget "WomenMoon" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F2BA52878909954129ADB119 /* Debug */,
+				2EAC59BFEB888CB783705A6F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B7B32AD5678992CE8BFD8C21 /* Build configuration list for PBXProject "WomenMoon" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EA066FAE705C67E4811B7CBA /* Debug */,
+				433EEA428D503A7BADC2D71D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C9E8BD5D4079F3199BB6F765 /* Project object */;
+}
