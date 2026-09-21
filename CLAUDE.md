@@ -98,14 +98,34 @@ Central type definitions file — all enums live here:
 
 ### Key Dependencies & External Integration
 
-- **DeepSeek API** at `https://api.deepseek.com/v1` using model `deepseek-chat`. API key stored in Keychain (`KeychainHelper` in [Views/Settings/SettingsView.swift](Views/Settings/SettingsView.swift)) or env var.
+- **DeepSeek API** at `https://api.deepseek.com/v1`. Model name lives in `Constants.aiModel`
+  (currently `deepseek-v4-flash`) — do not hardcode it elsewhere. API key stored in Keychain
+  (`KeychainHelper` in [Views/Settings/SettingsView.swift](Views/Settings/SettingsView.swift)) or env var.
 - **HealthKit** — reads steps, heart rate, sleep, menstrual flow, body mass, body fat %, height. Writes menstrual flow, body mass, body fat %.
-- **CloudKit** — container `iCloud.com.womenmoon.app`, used for custom food items and supplement sync only.
+- **CloudKit** — container `iCloud.com.womenmoon.app`. **Not wired up yet**: nothing calls
+  `CloudKitService`, and `WomenMoon.entitlements` declares HealthKit only — no iCloud
+  container identifiers. Enabling it requires creating the container in App Store Connect
+  and adding the iCloud entitlements. The `CKContainer` is created lazily so that the
+  missing capability cannot crash the app at launch.
 - **KeychainHelper** — defined in [Views/Settings/SettingsView.swift](Views/Settings/SettingsView.swift), used by `Constants.aiAPIKey` and `APIKeySettingsView`.
 
 ### 24 Solar Terms (节气) Data
 
-[Utils/SeasonalTerms.swift](Utils/SeasonalTerms.swift) contains a hardcoded database of all 24 solar terms with diet/lifestyle/exercise recommendations and seasonal foods, following TCM principles. Dates are approximate (1-2 day annual variation). Currently hardcoded for 2026-2027.
+[Utils/SeasonalTerms.swift](Utils/SeasonalTerms.swift) holds the TCM wellness content for all
+24 terms (diet/lifestyle/exercise/seasonal foods), but **dates are computed astronomically**,
+not stored: the engine solves for the moment the Sun's apparent longitude (Meeus simplified
+formula) reaches each 15° multiple, scanning for the crossing then bisecting to sub-second
+precision. Results are cached per year and judged in Asia/Shanghai time.
+
+Consequences worth knowing:
+- Any year works — verified 2027/2030/2035/2050 return a full 24 terms.
+- The term switches by **calendar day**, not by exact instant. 小寒 2026 lands at 16:19, and
+  the whole of Jan 5 counts as 小寒 — otherwise the app would show "冬至" on the morning of
+  the 5th, which no user expects.
+- `currentTermName(for:)` merges the previous year's terms, because roughly 4 days each
+  January (before 小寒) belong to the previous year's 冬至.
+- The old hardcoded table was also simply wrong in places: 2026 大暑 is 7-23 03:12 (table said
+  7-22), 雨水 is 2-18 (table said 2-19).
 
 ### Color System
 
@@ -118,5 +138,10 @@ Central type definitions file — all enums live here:
 - Services use async/await throughout; HealthKit callbacks are bridged via `withCheckedThrowingContinuation`
 - `@MainActor` on ObservableObject services that publish UI state
 - All Chinese UI strings are inline (no localization files yet)
-- `FoodDatabase.json` in Resources contains preloaded food items
-- The `ViewModels/` directory exists but is currently empty — view logic lives in Views
+- `FoodDatabase.json` in Resources holds 118 built-in foods. It is imported on first launch by
+  `FoodSeeder.seedIfNeeded`, which only runs when the library is empty so it never overwrites
+  user-created entries. **The `category` field uses English keys** (`staple`, `meat`, …) while
+  `FoodCategory.rawValue` is the Chinese display name — resolve via `FoodCategory(seedKey:)`,
+  never `FoodCategory(rawValue:)`.
+- The `ViewModels/` directory exists but is currently empty — view logic lives in Views.
+  `CycleTrackerView` (627 lines) and `HomeView` (479 lines) are the main candidates for extraction.
