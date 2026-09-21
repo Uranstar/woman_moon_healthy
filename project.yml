@@ -32,6 +32,13 @@ targets:
         excludes:
           - "project.yml"
           - "*.md"
+          # 以下三项必须显式排除：`*.md` 之类的通配只匹配顶层，
+          # 子目录里的内容会被整个打进 App 资源包。
+          # 曾因此把 .git 的 hook 样本与 pack 文件、以及 .workbuddy 下的内部笔记
+          # 一并打包进 App —— 既撑大体积，也把开发记录泄露给了用户。
+          - ".git"
+          - ".workbuddy"
+          - "docs"
           - "WomenMoon.xcodeproj"
           - "Tests"
     settings:
