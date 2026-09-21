@@ -86,6 +86,11 @@ struct CycleCalculator {
         periodLength: Int,
         months: Int = 3
     ) -> [CycleRecord] {
+        // `for i in 1...months` 在 months <= 0 时会构造下界大于上界的 ClosedRange，
+        // 触发 "Range requires lowerBound <= upperBound" 运行时崩溃。
+        // 当前调用方都传 6，但这是库函数，不该由调用方保证入参合法性。
+        guard months > 0 else { return [] }
+
         var predictions: [CycleRecord] = []
         let calendar = Calendar.current
 
