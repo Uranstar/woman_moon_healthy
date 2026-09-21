@@ -53,7 +53,8 @@ final class HealthKitService: ObservableObject {
             )
             isAuthorized = true
         } catch {
-            throw HealthKitError.authorizationDenied
+            // 保留底层错误，否则无法区分「用户拒绝」与「配置缺失／系统异常」
+            throw HealthKitError.authorizationFailed(error)
         }
     }
 
@@ -350,6 +351,7 @@ final class HealthKitService: ObservableObject {
 enum HealthKitError: LocalizedError {
     case notAvailable
     case authorizationDenied
+    case authorizationFailed(Error)
     case dataNotFound
 
     var errorDescription: String? {
@@ -358,6 +360,8 @@ enum HealthKitError: LocalizedError {
             return "此设备不支持健康数据"
         case .authorizationDenied:
             return "未授权访问健康数据"
+        case .authorizationFailed(let underlying):
+            return "健康数据授权失败：\(underlying.localizedDescription)"
         case .dataNotFound:
             return "未找到健康数据"
         }
