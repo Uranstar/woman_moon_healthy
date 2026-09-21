@@ -8,14 +8,32 @@ struct HomeView: View {
 
     @State private var todaySteps: Double = 0
     @State private var todayActiveCals: Double = 0
-    @State private var waterGlasses: Int = 0
     @State private var currentTermName: String = ""
-    @State private var navigatingToStress = false
     @State private var navigatingToWellness = false
     @State private var navigatingToAI = false
 
-    // 一杯水的默认容量
+    // 饮水按天持久化：原先用 @State，App 一重启就归零
+    @AppStorage("waterGlassCount") private var waterGlassCount: Int = 0
+    @AppStorage("waterGlassDay") private var waterGlassDay: Date = .distantPast
+    /// 一杯水的容量（ml），设置页可改
     @AppStorage("waterGlassSize") private var waterGlassSize: Double = 200
+
+    /// 每日饮水目标（杯）
+    private let waterGoalGlasses = 8
+
+    /// 当天已喝杯数，跨天自动归零
+    private var todayWaterGlasses: Int {
+        Calendar.current.isDateInToday(waterGlassDay) ? waterGlassCount : 0
+    }
+
+    private func addWaterGlass() {
+        if Calendar.current.isDateInToday(waterGlassDay) {
+            waterGlassCount += 1
+        } else {
+            waterGlassCount = 1
+            waterGlassDay = Date()
+        }
+    }
 
     var body: some View {
         let profile = userProfiles.first
@@ -100,7 +118,8 @@ struct HomeView: View {
             NavigationLink(destination: HealthMetricsView()) {
                 ActionCard(icon: "scalemass", label: "记体重", color: Color(hex: "#2196F3"))
             }
-            NavigationLink(destination: NutritionView()) {
+            // 此前这里也指向 NutritionView，与「记饮食」重复，补剂记录实际进不去
+            NavigationLink(destination: SupplementDetailView()) {
                 ActionCard(icon: "pill", label: "记补剂", color: Color(hex: "#9C27B0"))
             }
         }
@@ -196,10 +215,16 @@ struct HomeView: View {
                 NavigationLink(destination: NutritionView()) {
                     MetricGridItem(icon: "fork.knife", value: "\(Int(dietCals))", unit: "kcal", color: Color(hex: "#FF9800"))
                 }
-                // 喝水 → 点击加一杯
-                Button(action: { waterGlasses += 1 }) {
-                    MetricGridItem(icon: "drop.fill", value: "\(waterGlasses)", unit: "杯", color: Color(hex: "#00BCD4"))
+                // 喝水 → 点击加一杯，达标后转为绿色
+                Button(action: addWaterGlass) {
+                    MetricGridItem(
+                        icon: "drop.fill",
+                        value: "\(todayWaterGlasses)/\(waterGoalGlasses)",
+                        unit: "杯",
+                        color: todayWaterGlasses >= waterGoalGlasses ? Color(hex: "#4CAF50") : Color(hex: "#00BCD4")
+                    )
                 }
+                .accessibilityLabel("今日饮水 \(todayWaterGlasses) 杯，共 \(waterGoalGlasses) 杯目标，每杯 \(Int(waterGlassSize)) 毫升，点击记录一杯")
             }
         }
         .padding()
