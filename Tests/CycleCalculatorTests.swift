@@ -135,4 +135,157 @@ final class CycleCalculatorTests: XCTestCase {
             "预测记录不应与真实的周期起始日重叠"
         )
     }
+
+    func testGeneratePredictionsCountMatchesRequestedMonths() {
+        for months in [1, 3, 6, 12] {
+            let predictions = CycleCalculator.generatePredictions(
+                from: startDate, cycleLength: 28, periodLength: 5, months: months
+            )
+            XCTAssertEqual(predictions.count, months, "请求 \(months) 个月应生成 \(months) 条预测")
+        }
+    }
+
+    /// 回归：`months <= 0` 曾使 `for i in 1...months` 构造非法 ClosedRange 并崩溃
+    func testGeneratePredictionsWithNonPositiveMonthsReturnsEmpty() {
+        for months in [0, -1, -12] {
+            XCTAssertTrue(
+                CycleCalculator.generatePredictions(
+                    from: startDate, cycleLength: 28, periodLength: 5, months: months
+                ).isEmpty,
+                "months=\(months) 应返回空数组而不是崩溃"
+            )
+        }
+    }
+
+    func testPredictionDatesAdvanceByExactlyOneCycle() {
+        let predictions = CycleCalculator.generatePredictions(
+            from: startDate, cycleLength: 28, periodLength: 5, months: 4
+        )
+        for (index, prediction) in predictions.enumerated() {
+            let expected = Calendar.current.date(byAdding: .day, value: (index + 1) * 28, to: startDate)!
+            XCTAssertEqual(
+                Calendar.current.startOfDay(for: prediction.startDate),
+                Calendar.current.startOfDay(for: expected),
+                "第 \(index + 1) 条预测的起始日应恰好相隔 \(index + 1) 个周期"
+            )
+        }
+    }
+
+    // MARK: - 边界：跨月跨年与闰年
+
+    func testPredictNextCycleStartCrossesYearBoundary() {
+        let next = CycleCalculator.predictNextCycleStart(from: makeDate(2026, 12, 20), cycleLength: 28)
+        XCTAssertEqual(next, makeDate(2027, 1, 17))
+    }
+
+    func testPredictNextCycleStartHandlesLeapFebruary() {
+        // 2028 是闰年，2 月有 29 天
+        let next = CycleCalculator.predictNextCycleStart(from: makeDate(2028, 2, 1), cycleLength: 28)
+        XCTAssertEqual(next, makeDate(2028, 2, 29))
+    }
+
+    // MARK: - 极端参数不应崩溃
+
+    func testPeriodLongerThanCycleDoesNotCrash() {
+        for day in 1...30 {
+            let date = Calendar.current.date(byAdding: .day, value: day - 1, to: startDate)!
+            _ = CycleCalculator.currentPhase(
+                from: startDate, cycleLength: 28, periodLength: 40, lutealLength: 14, to: date
+            )
+        }
+    }
+
+    func testLutealLongerThanCycleDoesNotCrash() {
+        for day in 1...30 {
+            let date = Calendar.current.date(byAdding: .day, value: day - 1, to: startDate)!
+            _ = CycleCalculator.currentPhase(
+                from: startDate, cycleLength: 21, periodLength: 5, lutealLength: 30, to: date
+            )
+        }
+    }
+
+    func testSingleDayCycleDoesNotCrash() {
+        _ = CycleCalculator.currentPhase(from: startDate, cycleLength: 1, periodLength: 1, lutealLength: 1)
+    }
+
+    func testFertilityWindowForShortCycleDoesNotCrash() {
+        let window = CycleCalculator.fertilityWindow(from: startDate, cycleLength: 10, lutealLength: 14)
+        XCTAssertLessThanOrEqual(window.start, window.end, "窗口的起始不应晚于结束")
+    }
+
+    // MARK: - 性质断言：全参数域不变量
+
+    /// 遍历 UI 允许的全部周期参数组合，断言任意一天都能归入某个阶段且不崩溃。
+    /// （周期 21–35、经期 2–10 取自 Onboarding / ProfileEdit 的 Slider 范围）
+    func testEveryDayOfSupportedParameterRangeMapsToAPhase() {
+        for cycleLength in 21...35 {
+            for periodLength in 2...10 {
+                for lutealLength in 10...16 {
+                    let phases = (1...cycleLength).map { day -> CyclePhase in
+                        let date = Calendar.current.date(byAdding: .day, value: day - 1, to: startDate)!
+                        return CycleCalculator.currentPhase(
+                            from: startDate,
+                            cycleLength: cycleLength,
+                            periodLength: periodLength,
+                            lutealLength: lutealLength,
+                            to: date
+                        )
+                    }
+                    XCTAssertEqual(phases.count, cycleLength, "周期内每一天都应有一个阶段")
+                }
+            }
+        }
+    }
+
+    /// 阶段顺序必须是 经期 → 卵泡期 → 排卵期 → 黄体期，不允许回退。
+    /// 回归背景：`CycleTrackerView` 里还有一份手写的阶段判定副本，两套口径若不同步，
+    /// 日历配色与详情页文案就会互相矛盾。
+    func testPhaseOrderIsMonotonicWithinACycle() {
+        let order: [CyclePhase: Int] = [.menstrual: 0, .follicular: 1, .ovulatory: 2, .luteal: 3]
+
+        for cycleLength in 21...35 {
+            for periodLength in 2...10 {
+                var previous = 0
+                for day in 1...cycleLength {
+                    let date = Calendar.current.date(byAdding: .day, value: day - 1, to: startDate)!
+                    let phase = CycleCalculator.currentPhase(
+                        from: startDate, cycleLength: cycleLength, periodLength: periodLength, to: date
+                    )
+                    let rank = order[phase]!
+                    XCTAssertGreaterThanOrEqual(
+                        rank, previous,
+                        "周期 \(cycleLength) 天 / 经期 \(periodLength) 天时，第 \(day) 天的阶段 \(phase.rawValue) 出现回退"
+                    )
+                    previous = rank
+                }
+            }
+        }
+    }
+
+    /// 第 1 天必须永远是经期 —— 这是"周期起点"的定义，也是日历高亮的依据
+    func testFirstDayIsAlwaysMenstrual() {
+        for cycleLength in 21...35 {
+            for periodLength in 2...10 {
+                XCTAssertEqual(
+                    CycleCalculator.currentPhase(
+                        from: startDate, cycleLength: cycleLength, periodLength: periodLength, to: startDate
+                    ),
+                    .menstrual,
+                    "周期 \(cycleLength) 天 / 经期 \(periodLength) 天的第 1 天应为经期"
+                )
+            }
+        }
+    }
+
+    // MARK: - 受孕窗口
+
+    func testFertilityWindowSpansSevenDays() {
+        let window = CycleCalculator.fertilityWindow(from: startDate, cycleLength: 28, lutealLength: 14)
+        let days = Calendar.current.dateComponents(
+            [.day],
+            from: Calendar.current.startOfDay(for: window.start),
+            to: Calendar.current.startOfDay(for: window.end)
+        ).day
+        XCTAssertEqual(days, 6, "排卵日前 5 天到后 1 天，共跨度 6 天（7 个自然日）")
+    }
 }

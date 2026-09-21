@@ -54,4 +54,49 @@ final class UserProfileTests: XCTestCase {
     func testCurrentCyclePhaseFallsBackToFollicularWithoutStartDate() {
         XCTAssertEqual(UserProfile().currentCyclePhase, .follicular)
     }
+
+    func testCurrentCyclePhaseIsMenstrualOnStartDay() {
+        let profile = UserProfile(cycleLength: 28, periodLength: 5, lastCycleStartDate: Date())
+        XCTAssertEqual(profile.currentCyclePhase, .menstrual, "周期起始日当天应判定为经期")
+    }
+
+    /// 回归：短周期不得让档案的阶段判定崩溃。
+    /// `CycleTrackerView` 里还有一份手写的判定副本，那条路径此前正是崩溃点。
+    func testCurrentCyclePhaseDoesNotCrashForShortCycle() {
+        for cycleLength in [8, 15, 20, 21] {
+            for periodLength in [2, 5, 10] {
+                let profile = UserProfile(
+                    cycleLength: cycleLength,
+                    periodLength: periodLength,
+                    lastCycleStartDate: Calendar.current.date(byAdding: .day, value: -3, to: Date())!
+                )
+                _ = profile.currentCyclePhase
+            }
+        }
+    }
+
+    func testBMIForKnownReferenceValue() {
+        // 身高 170cm、体重 65kg → 65 / 1.7² = 22.49
+        let profile = UserProfile(weight: 65, height: 170)
+        XCTAssertEqual(profile.bmi ?? -1, 22.49, accuracy: 0.01)
+    }
+
+    func testBMIReflectsCurrentWeightAfterChange() {
+        let profile = UserProfile(weight: 70, height: 165)
+        let before = profile.bmi
+        profile.weight = 60
+        let after = profile.bmi
+
+        XCTAssertNotNil(before)
+        XCTAssertNotNil(after)
+        XCTAssertLessThan(after!, before!, "体重下降后 BMI 应随之下降")
+    }
+
+    /// 记录当前行为：`age` 只做日期差，不校验出生日期是否在未来。
+    /// 编辑态出生日期选择器没有上限，可选出未来日期，此测试固化该风险点，
+    /// 一旦上游加了钳位，本用例会失败并提示更新。
+    func testAgeIsNegativeWhenBirthDateIsInTheFuture() {
+        let future = Calendar.current.date(byAdding: .year, value: 5, to: Date())!
+        XCTAssertLessThan(UserProfile(birthDate: future).age, 0)
+    }
 }
