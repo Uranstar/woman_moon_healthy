@@ -8,9 +8,11 @@ struct CycleCalculator {
     }
 
     // MARK: - 预测排卵日
+    /// 排卵日落在周期第 `cycleLength - lutealLength` 天；由于第 N 天对应起始日加 N-1 天，
+    /// 这里必须减 1，否则会比 `fertilityWindow` 算出的排卵日整体晚一天。
     static func predictOvulationDay(from cycleStartDate: Date, cycleLength: Int, lutealLength: Int = 14) -> Date {
-        let ovulationDay = cycleLength - lutealLength
-        return Calendar.current.date(byAdding: .day, value: ovulationDay, to: cycleStartDate) ?? cycleStartDate
+        let ovulationDay = max(cycleLength - lutealLength, 1)
+        return Calendar.current.date(byAdding: .day, value: ovulationDay - 1, to: cycleStartDate) ?? cycleStartDate
     }
 
     // MARK: - 计算当前天在周期中的位置
@@ -20,23 +22,31 @@ struct CycleCalculator {
     }
 
     // MARK: - 判断当前周期阶段
+    /// - Parameter date: 待判断的日期，默认取当前时间。显式传入以便单元测试固定时间点。
     static func currentPhase(
         from cycleStartDate: Date,
         cycleLength: Int = 28,
         periodLength: Int = 5,
-        lutealLength: Int = 14
+        lutealLength: Int = 14,
+        to date: Date = Date()
     ) -> CyclePhase {
-        let currentDay = dayOfCycle(from: cycleStartDate)
-        let normalizedDay = ((currentDay - 1) % cycleLength) + 1
+        let safeCycleLength = max(cycleLength, 1)
+        let currentDay = dayOfCycle(from: cycleStartDate, to: date)
+        // 早于周期起始日时钳到第一天，避免取模后得到负数
+        let normalizedDay = ((max(currentDay, 1) - 1) % safeCycleLength) + 1
 
-        switch normalizedDay {
-        case 1...periodLength:
+        let ovulatoryStart = max(cycleLength - lutealLength, periodLength + 1)
+
+        // 用比较而非 switch range：短周期（如 20 天）下原实现的
+        // `case (periodLength+1)...(cycleLength-lutealLength-1)` 会构造出
+        // 下界大于上界的 ClosedRange，直接触发 "Range requires lowerBound <= upperBound" 崩溃。
+        if normalizedDay <= periodLength {
             return .menstrual
-        case (periodLength + 1)...(cycleLength - lutealLength - 1):
+        } else if normalizedDay < ovulatoryStart {
             return .follicular
-        case (cycleLength - lutealLength)...(cycleLength - lutealLength + 2):
+        } else if normalizedDay < ovulatoryStart + 3 {
             return .ovulatory
-        default:
+        } else {
             return .luteal
         }
     }
@@ -79,7 +89,8 @@ struct CycleCalculator {
         var predictions: [CycleRecord] = []
         let calendar = Calendar.current
 
-        for i in 0..<months {
+        // 从下一个周期开始：起点那天已有真实记录，再生成一条预测会造成同日重复
+        for i in 1...months {
             let startDate = calendar.date(byAdding: .day, value: i * cycleLength, to: lastStartDate) ?? lastStartDate
             let endDate = calendar.date(byAdding: .day, value: periodLength - 1, to: startDate)
             let predictedEndDate = calendar.date(byAdding: .day, value: cycleLength - 1, to: startDate)

@@ -13,24 +13,23 @@ extension Date {
     }
 
     /// 根据周期开始日和当前日期计算所处的周期阶段
-    func cyclePhase(cycleStartDate: Date, cycleLength: Int = 28, periodLength: Int = 5) -> CyclePhase {
-        guard let dayOfCycle = self.dayOfCycle(from: cycleStartDate) else {
-            return .menstrual
-        }
-        let normalizedDay = ((dayOfCycle - 1) % cycleLength) + 1
-
-        switch normalizedDay {
-        case 1...periodLength:
-            return .menstrual
-        case (periodLength + 1)...13:
-            return .follicular
-        case 14...16:
-            return .ovulatory
-        case 17...cycleLength:
-            return .luteal
-        default:
-            return .menstrual
-        }
+    ///
+    /// 原先这里自行维护一套硬编码的 13/14/16/17 天边界，与 `CycleCalculator` 的
+    /// 判定口径不一致，且 `case 17...cycleLength` 在周期短于 17 天时会构造非法 Range 崩溃。
+    /// 改为统一委托给 `CycleCalculator`。
+    func cyclePhase(
+        cycleStartDate: Date,
+        cycleLength: Int = 28,
+        periodLength: Int = 5,
+        lutealLength: Int = 14
+    ) -> CyclePhase {
+        CycleCalculator.currentPhase(
+            from: cycleStartDate,
+            cycleLength: cycleLength,
+            periodLength: periodLength,
+            lutealLength: lutealLength,
+            to: self
+        )
     }
 
     /// 获取当天的节气 (返回空字符串如果不是节气日)
