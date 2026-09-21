@@ -15,9 +15,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "1F99FFC112B4AB14C395A687"
-               BuildableName = "WomenMoon.app"
-               BlueprintName = "WomenMoon"
+               BlueprintIdentifier = "39AC1F5063A1ADB6323201F1"
+               BuildableName = "WomenMoonTests.xctest"
+               BlueprintName = "WomenMoonTests"
                ReferencedContainer = "container:WomenMoon.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -33,24 +33,13 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "1F99FFC112B4AB14C395A687"
-            BuildableName = "WomenMoon.app"
-            BlueprintName = "WomenMoon"
+            BlueprintIdentifier = "39AC1F5063A1ADB6323201F1"
+            BuildableName = "WomenMoonTests.xctest"
+            BlueprintName = "WomenMoonTests"
             ReferencedContainer = "container:WomenMoon.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <Testables>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "39AC1F5063A1ADB6323201F1"
-               BuildableName = "WomenMoonTests.xctest"
-               BlueprintName = "WomenMoonTests"
-               ReferencedContainer = "container:WomenMoon.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <CommandLineArguments>
       </CommandLineArguments>
@@ -72,16 +61,15 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "1F99FFC112B4AB14C395A687"
-            BuildableName = "WomenMoon.app"
-            BlueprintName = "WomenMoon"
+            BlueprintIdentifier = "39AC1F5063A1ADB6323201F1"
+            BuildableName = "WomenMoonTests.xctest"
+            BlueprintName = "WomenMoonTests"
             ReferencedContainer = "container:WomenMoon.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
       <CommandLineArguments>
       </CommandLineArguments>
       <EnvironmentVariables>
@@ -98,16 +86,6 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "1F99FFC112B4AB14C395A687"
-            BuildableName = "WomenMoon.app"
-            BlueprintName = "WomenMoon"
-            ReferencedContainer = "container:WomenMoon.xcodeproj">
-         </BuildableReference>
-      </BuildableProductRunnable>
       <CommandLineArguments>
       </CommandLineArguments>
       <EnvironmentVariables>
@@ -117,6 +95,15 @@
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "39AC1F5063A1ADB6323201F1"
+            BuildableName = "WomenMoonTests.xctest"
+            BlueprintName = "WomenMoonTests"
+            ReferencedContainer = "container:WomenMoon.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

@@ -33,6 +33,7 @@ targets:
           - "project.yml"
           - "*.md"
           - "WomenMoon.xcodeproj"
+          - "Tests"
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.womenmoon.app
@@ -53,8 +54,30 @@ targets:
           SWIFT_OPTIMIZATION_LEVEL: "-O"
     dependencies: []
     scheme:
-      testTargets: []
-      gatherCoverageData: false
+      testTargets:
+        - WomenMoonTests
+      gatherCoverageData: true
+      environmentVariables:
+        - variable: DEEPSEEK_API_KEY
+          value: ""
+          isEnabled: true
+
+  WomenMoonTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: Tests
+    dependencies:
+      - target: WomenMoon
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.womenmoon.tests
+        GENERATE_INFOPLIST_FILE: YES
+        CODE_SIGN_IDENTITY[sdk=iphonesimulator*]: ""
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: ""
+    scheme:
+      gatherCoverageData: true
       environmentVariables:
         - variable: DEEPSEEK_API_KEY
           value: ""
