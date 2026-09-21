@@ -39,8 +39,28 @@ xcodebuild test -scheme WomenMoon \
   -only-testing:WomenMoonTests
 ```
 
-Coverage: `CycleCalculator` (cycle math, phase boundaries, short-cycle crash regressions),
-`NutritionCalculator` (BMR/TDEE/macros), `UserProfile` (BMI regression).
+Coverage: 137 cases across 8 files.
+
+- **L1 pure logic (105 cases)** — `CycleCalculator` (cycle math, phase boundaries, short-cycle
+  crash regressions, plus parameter-domain properties: phase order is monotonic, first day is
+  always menstrual), `NutritionCalculator` (BMR/TDEE/macros/phase adjustments),
+  `UserProfile` (BMI regression), `SeasonalTerms` (astronomical term solver — any year, 24 terms,
+  cross-year fallback), `SeasonalWellnessService`, `ExercisePlan`, `FoodCategory`
+  (locks the Chinese-`rawValue` vs English-`seedKey` trap).
+- **L2 SwiftData (32 cases)** — `CycleService` write paths against an in-memory
+  `ModelContainer`: same-day update vs insert, prediction rebuild, average cycle/period maths,
+  single-day `endDate` rule, cycle-event overwrite.
+- 3 cases are **characterization tests** that deliberately assert current defect behaviour.
+  They are registered in chapter 6 of `docs/测试文档.md`; they will fail once the defect is fixed —
+  that is intentional, update the doc alongside.
+
+Docs: [`docs/功能清单.md`](docs/功能清单.md) (code-accurate feature inventory —
+authoritative over `功能梳理文档.md`), [`docs/测试文档.md`](docs/测试文档.md)
+(strategy, case list, coverage gaps, manual regression checklist).
+
+> Note: `project.yml`'s `excludes` globs only match the **top level** — `*.md` will not
+> exclude nested `.md` files. Exclude large/hidden directories (`.git`, `.workbuddy`, `docs`)
+> explicitly, or they get bundled into the app as resources.
 
 ## Architecture
 
