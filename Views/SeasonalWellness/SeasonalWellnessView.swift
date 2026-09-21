@@ -213,13 +213,13 @@ struct SeasonalWellnessView: View {
             let allTerms = SeasonalTerms.termsForYear(Calendar.current.component(.year, from: Date()))
 
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
-                ForEach(allTerms, id: \.0) { dateStr, name in
-                    let isCurrent = currentTerm?.name == name
+                ForEach(allTerms, id: \.name) { term in
+                    let isCurrent = currentTerm?.name == term.name
                     VStack(spacing: 4) {
-                        Text(name)
+                        Text(term.name)
                             .font(.caption)
                             .fontWeight(isCurrent ? .bold : .regular)
-                        Text(String(dateStr.suffix(5)))
+                        Text(term.date.shortChineseFormatted)
                             .font(.caption2)
                             .foregroundColor(.secondary)
                     }

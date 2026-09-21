@@ -4,22 +4,7 @@ import Foundation
 struct SeasonalWellnessService {
     // MARK: - 获取当前节气
     static func currentSolarTerm(for date: Date = Date()) -> SolarTerm? {
-        let year = Calendar.current.component(.year, from: date)
-        let terms = SeasonalTerms.termsForYear(year)
-
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-
-        var currentTermName: String?
-        for (dateStr, name) in terms {
-            if let termDate = formatter.date(from: dateStr), termDate <= date {
-                currentTermName = name
-            } else {
-                break
-            }
-        }
-
-        guard let name = currentTermName else { return nil }
+        guard let name = SeasonalTerms.currentTermName(for: date) else { return nil }
         return SeasonalTerms.detail(for: name)
     }
 

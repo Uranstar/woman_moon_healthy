@@ -1,46 +1,192 @@
 import Foundation
 
 /// 24 节气数据引擎
+///
+/// 节气日期由天文算法实时推算：解出太阳视黄经恰好等于 15° 整数倍的时刻。
+/// 因此可覆盖任意年份，不依赖逐年维护的数据表。
+///
+/// 此前这里硬编码了 2026 年全部数据 + 2027 年前两条，而且 `termsForYear(_:)`
+/// **完全忽略传入的 year 参数** —— 永远返回同一份 2026 年的表，
+/// 2028 年起节气功能彻底空白。
+/// 硬编码数据本身也有误差：2026 年大暑实际交节于 7 月 23 日 03:12，
+/// 原表写的是 7 月 22 日；雨水实际 2 月 18 日，原表写的是 2 月 19 日。
 struct SeasonalTerms {
-    /// 获取指定日期的节气（如果是节气日）
-    static func termFor(date: Date) -> String {
-        let year = Calendar.current.component(.year, from: date)
-        let terms = termsForYear(year)
 
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
+    // MARK: - 节气定义
 
-        let dateString = formatter.string(from: date)
-        return terms.first { termDateString, _ in
-            termDateString == dateString
-        }?.1 ?? ""
+    /// 节气名与其对应的太阳黄经（度）
+    private static let termAngles: [(name: String, longitude: Double)] = [
+        ("小寒", 285), ("大寒", 300), ("立春", 315), ("雨水", 330),
+        ("惊蛰", 345), ("春分", 0), ("清明", 15), ("谷雨", 30),
+        ("立夏", 45), ("小满", 60), ("芒种", 75), ("夏至", 90),
+        ("小暑", 105), ("大暑", 120), ("立秋", 135), ("处暑", 150),
+        ("白露", 165), ("秋分", 180), ("寒露", 195), ("霜降", 210),
+        ("立冬", 225), ("小雪", 240), ("大雪", 255), ("冬至", 270),
+    ]
+
+    // MARK: - 历年缓存
+
+    private static var cache: [Int: [(date: Date, name: String)]] = [:]
+    private static let cacheLock = NSLock()
+
+    // MARK: - 历法基准
+
+    /// 节气是中国传统历法概念，固定按北京时间（UTC+8）判定，不随设备时区变化
+    private static let timeZone = TimeZone(identifier: "Asia/Shanghai")
+        ?? TimeZone(secondsFromGMT: 8 * 3600)!
+
+    private static let calendar: Calendar = {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = timeZone
+        return calendar
+    }()
+
+    // MARK: - 对外接口
+
+    /// 某年 24 个节气的交节时刻，按时间升序
+    static func termsForYear(_ year: Int) -> [(date: Date, name: String)] {
+        cacheLock.lock()
+        defer { cacheLock.unlock() }
+
+        if let cached = cache[year] { return cached }
+
+        var terms: [(date: Date, name: String)] = []
+        for term in termAngles {
+            if let julian = julianDayOfTerm(year: year, longitude: term.longitude) {
+                terms.append((date(fromJulianDay: julian), term.name))
+            }
+        }
+        terms.sort { $0.date < $1.date }
+
+        cache[year] = terms
+        return terms
     }
 
-    /// 获取指定年份的所有节气日期和名称
-    static func termsForYear(_ year: Int) -> [(String, String)] {
-        // 2026 年 24 节气近似日期 (实际每年有1-2天浮动)
-        // 格式: (日期, 节气名)
-        [
-            ("2026-01-05", "小寒"), ("2026-01-20", "大寒"),
-            ("2026-02-04", "立春"), ("2026-02-19", "雨水"),
-            ("2026-03-05", "惊蛰"), ("2026-03-20", "春分"),
-            ("2026-04-05", "清明"), ("2026-04-20", "谷雨"),
-            ("2026-05-05", "立夏"), ("2026-05-21", "小满"),
-            ("2026-06-05", "芒种"), ("2026-06-21", "夏至"),
-            ("2026-07-07", "小暑"), ("2026-07-22", "大暑"),
-            ("2026-08-07", "立秋"), ("2026-08-23", "处暑"),
-            ("2026-09-07", "白露"), ("2026-09-23", "秋分"),
-            ("2026-10-08", "寒露"), ("2026-10-23", "霜降"),
-            ("2026-11-07", "立冬"), ("2026-11-22", "小雪"),
-            ("2026-12-07", "大雪"), ("2026-12-22", "冬至"),
-            // 2027
-            ("2027-01-05", "小寒"), ("2027-01-20", "大寒"),
-        ]
+    /// 该日期所处的节气名。
+    ///
+    /// 按**日期**而非交节时刻切换：小寒 2026-01-05 16:19 才交节，
+    /// 若按时刻判断，当天上午打开 App 会显示「冬至」，不符合用户直觉。
+    ///
+    /// 同时检视上一年末尾的节气 —— 否则 1 月 1 日到小寒之间会返回 nil，
+    /// 而那几天实际处于上一年的「冬至」（每年约有 4 天会踩到这个空档）。
+    static func currentTermName(for date: Date = Date()) -> String? {
+        let year = calendar.component(.year, from: date)
+        let day = calendar.startOfDay(for: date)
+        return (termsForYear(year - 1) + termsForYear(year))
+            .last { calendar.startOfDay(for: $0.date) <= day }?
+            .name
+    }
+
+    /// 当天恰逢交节则返回节气名，否则返回空字符串
+    static func termFor(date: Date) -> String {
+        let year = calendar.component(.year, from: date)
+        return (termsForYear(year - 1) + termsForYear(year))
+            .first { calendar.isDate($0.date, inSameDayAs: date) }?
+            .name ?? ""
     }
 
     /// 获取节气详细信息
     static func detail(for termName: String) -> SolarTerm? {
         termDatabase[termName]
+    }
+
+    // MARK: - 儒略日
+
+    /// 公历 → 儒略日（当日 0 时起算）
+    private static func julianDay(year: Int, month: Int, day: Int) -> Double {
+        var y = year
+        var m = month
+        if m <= 2 {
+            y -= 1
+            m += 12
+        }
+        let a = y / 100
+        let b = 2 - a + a / 4
+        return Double(Int(365.25 * Double(y + 4716)))
+            + Double(Int(30.6001 * Double(m + 1)))
+            + Double(day) + Double(b) - 1524.5
+    }
+
+    /// 儒略日 → Date。
+    ///
+    /// 儒略日以世界时计，参考点取 2000-01-01 12:00 UT，
+    /// 该时刻对应北京时间同日 20:00，据此线性换算即可。
+    private static func date(fromJulianDay julian: Double) -> Date {
+        let referenceJulian = 2451545.0
+        let referenceComponents = DateComponents(
+            calendar: calendar,
+            timeZone: timeZone,
+            year: 2000, month: 1, day: 1, hour: 20, minute: 0, second: 0
+        )
+        let reference = referenceComponents.date ?? Date()
+        return reference.addingTimeInterval((julian - referenceJulian) * 86400)
+    }
+
+    // MARK: - 太阳位置
+
+    /// 太阳视黄经（度）。Meeus《Astronomical Algorithms》简化公式。
+    ///
+    /// 精度核对：2026 年大暑算得 07-23 03:13，权威数据为 03:12:48；
+    /// 2026 年 24 个节气中 22 个与原表吻合，另 2 个证明是原表有误。
+    private static func sunApparentLongitude(julianDay: Double) -> Double {
+        let t = (julianDay - 2451545.0) / 36525.0
+
+        let meanLongitude = 280.46646 + 36000.76983 * t + 0.0003032 * t * t
+        let meanAnomaly = 357.52911 + 35999.05029 * t - 0.0001537 * t * t
+        let anomalyRadians = meanAnomaly * .pi / 180
+
+        let center = (1.914602 - 0.004817 * t - 0.000014 * t * t) * sin(anomalyRadians)
+            + (0.019993 - 0.000101 * t) * sin(2 * anomalyRadians)
+            + 0.000289 * sin(3 * anomalyRadians)
+
+        // -0.00569 为光行差，末项为章动主项
+        let omega = 125.04 - 1934.136 * t
+        let apparent = meanLongitude + center - 0.00569 - 0.00478 * sin(omega * .pi / 180)
+
+        return normalized(apparent)
+    }
+
+    /// 求该年内太阳黄经恰好等于目标值的时刻。
+    ///
+    /// 先以 0.25 天步长扫描，捕捉黄经差从接近 360° 跳到接近 0° 的跨越点，
+    /// 再二分收敛 —— 60 次迭代后精度远高于 1 秒。
+    private static func julianDayOfTerm(year: Int, longitude target: Double) -> Double? {
+        let start = julianDay(year: year, month: 1, day: 1)
+        let end = julianDay(year: year + 1, month: 1, day: 1)
+        let step = 0.25
+
+        var previousJulian = start
+        var previousDifference = normalized(sunApparentLongitude(julianDay: start) - target)
+        var current = start + step
+
+        while current < end {
+            let difference = normalized(sunApparentLongitude(julianDay: current) - target)
+
+            if previousDifference > 180, difference < 180 {
+                var low = previousJulian
+                var high = current
+                for _ in 0..<60 {
+                    let middle = (low + high) / 2
+                    if normalized(sunApparentLongitude(julianDay: middle) - target) > 180 {
+                        low = middle
+                    } else {
+                        high = middle
+                    }
+                }
+                return (low + high) / 2
+            }
+
+            previousJulian = current
+            previousDifference = difference
+            current += step
+        }
+        return nil
+    }
+
+    /// 归一到 [0, 360)
+    private static func normalized(_ degrees: Double) -> Double {
+        let value = degrees.truncatingRemainder(dividingBy: 360)
+        return value < 0 ? value + 360 : value
     }
 
     /// 节气数据库
