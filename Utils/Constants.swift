@@ -12,13 +12,9 @@ enum Constants {
         return KeychainHelper.read(key: "deepseek_api_key") ?? ""
     }
 
-    // MARK: - HealthKit
-    static let healthKitReadTypes: [HKType] = [
-        .stepCount, .heartRate, .sleepAnalysis,
-        .menstrualCycle, .bodyMass, .bodyFatPercentage
-    ]
-
     // MARK: - Default Values
+    // HealthKit 的类型声明集中在 HealthKitService.readTypes / writeTypes，
+    // 那里直接使用 HKObjectType 构造，不经过中间枚举。
     static let defaultCycleLength = 28
     static let defaultPeriodLength = 5
     static let defaultLutealLength = 14
@@ -28,16 +24,6 @@ enum Constants {
     static let defaultProteinGoal = 60.0  // g
     static let defaultFatGoal = 65.0      // g
     static let defaultCarbsGoal = 250.0   // g
-}
-
-// MARK: - HealthKit Types
-enum HKType: String {
-    case stepCount
-    case heartRate
-    case sleepAnalysis
-    case menstrualCycle
-    case bodyMass
-    case bodyFatPercentage
 }
 
 // MARK: - Cycle Phase
@@ -199,6 +185,37 @@ enum FoodCategory: String, Codable, CaseIterable {
     case snack = "零食"
     case supplement = "补剂"
     case seasoning = "调料"
+}
+
+extension FoodCategory {
+    /// 内置数据文件 [Resources/FoodDatabase.json](Resources/FoodDatabase.json) 用英文 case 名
+    /// 作为 `category` 字段取值，而 `rawValue` 是中文展示名，
+    /// 因此**不能**用 `FoodCategory(rawValue:)` 反序列化 —— 那样每一条都会解析失败。
+    init?(seedKey: String) {
+        guard let match = FoodCategory.allCases.first(where: { $0.seedKey == seedKey }) else {
+            return nil
+        }
+        self = match
+    }
+
+    /// 与内置数据文件中的 `category` 字段一一对应。
+    /// 这里用穷举 switch 而非字符串拼接，新增分类时编译器会强制补全。
+    var seedKey: String {
+        switch self {
+        case .staple: return "staple"
+        case .meat: return "meat"
+        case .seafood: return "seafood"
+        case .egg: return "egg"
+        case .dairy: return "dairy"
+        case .vegetable: return "vegetable"
+        case .fruit: return "fruit"
+        case .nut: return "nut"
+        case .beverage: return "beverage"
+        case .snack: return "snack"
+        case .supplement: return "supplement"
+        case .seasoning: return "seasoning"
+        }
+    }
 }
 
 // MARK: - Cycle Event Type

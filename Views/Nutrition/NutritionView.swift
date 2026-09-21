@@ -12,7 +12,12 @@ struct NutritionView: View {
     @State private var showingAddMeal = false
     @State private var showingFoodLibrary = false
     @State private var showingSupplementDetail = false
-    @State private var calorieGoal: Double = 2000
+
+    // 目标值：先用 Constants 的通用推荐值占位，onAppear 起按用户档案重算
+    @State private var calorieGoal: Double = Constants.defaultCalorieGoal
+    @State private var proteinGoal: Double = Constants.defaultProteinGoal
+    @State private var fatGoal: Double = Constants.defaultFatGoal
+    @State private var carbsGoal: Double = Constants.defaultCarbsGoal
 
     var body: some View {
         ScrollView {
@@ -90,9 +95,9 @@ struct NutritionView: View {
             }
 
             HStack(spacing: 12) {
-                MacroBar(label: "蛋白质", value: todayMeals.reduce(0){$0+$1.totalProtein}, target: 60, color: Color(hex: "#4CAF50"))
-                MacroBar(label: "脂肪", value: todayMeals.reduce(0){$0+$1.totalFat}, target: 50, color: Color(hex: "#FF9800"))
-                MacroBar(label: "碳水", value: todayMeals.reduce(0){$0+$1.totalCarbs}, target: 200, color: Color(hex: "#2196F3"))
+                MacroBar(label: "蛋白质", value: todayMeals.reduce(0){$0+$1.totalProtein}, target: proteinGoal, color: Color(hex: "#4CAF50"))
+                MacroBar(label: "脂肪", value: todayMeals.reduce(0){$0+$1.totalFat}, target: fatGoal, color: Color(hex: "#FF9800"))
+                MacroBar(label: "碳水", value: todayMeals.reduce(0){$0+$1.totalCarbs}, target: carbsGoal, color: Color(hex: "#2196F3"))
             }
         }
         .padding()
@@ -173,11 +178,27 @@ struct NutritionView: View {
         }
     }
 
+    /// 按用户档案重算热量与三大宏量目标。
+    ///
+    /// 此前只算了热量，宏量目标在视图里写死为 60/50/200，
+    /// 既不随目标（减脂/增肌）变化，也与 NutritionCalculator 的配比结果对不上。
     private func calculateGoals() {
         let profile = userProfiles.first
-        let bmrVal = NutritionCalculator.bmr(weightKg: profile?.weight ?? 50, heightCm: profile?.height ?? 160, age: profile?.age ?? 25)
-        let tdeeVal = NutritionCalculator.tdee(bmr: bmrVal, activityLevel: profile?.activityLevel ?? .moderatelyActive)
-        calorieGoal = NutritionCalculator.dailyCalorieTarget(tdee: tdeeVal, goal: profile?.goals.first ?? .maintain)
+        let bmrVal = NutritionCalculator.bmr(
+            weightKg: profile?.weight ?? 50,
+            heightCm: profile?.height ?? 160,
+            age: profile?.age ?? 25
+        )
+        let tdeeVal = NutritionCalculator.tdee(
+            bmr: bmrVal,
+            activityLevel: profile?.activityLevel ?? .moderatelyActive
+        )
+        let goal = profile?.goals.first ?? .maintain
+
+        calorieGoal = NutritionCalculator.dailyCalorieTarget(tdee: tdeeVal, goal: goal)
+        proteinGoal = NutritionCalculator.dailyProtein(targetCalories: calorieGoal, goal: goal)
+        fatGoal = NutritionCalculator.dailyFat(targetCalories: calorieGoal, goal: goal)
+        carbsGoal = NutritionCalculator.dailyCarbs(targetCalories: calorieGoal, goal: goal)
     }
 
     private var phaseDietAdvice: String {
@@ -274,9 +295,21 @@ struct AddMealView: View {
                 }
             }
             .sheet(isPresented: $showingManualInput) {
-                ManualFoodInputView { food in selectedFoods.append((food, 100)) }
+                ManualFoodInputView { food in addManualFood(food) }
             }
         }
+    }
+
+    /// 手动录入的食物必须落库，否则下次记录还要重新输入。
+    /// 同名时复用已有条目，避免食材库里出现一堆重名项。
+    private func addManualFood(_ food: FoodItem) {
+        if let existing = foodItems.first(where: { $0.name == food.name }) {
+            selectedFoods.append((existing, 100))
+            return
+        }
+        modelContext.insert(food)
+        try? modelContext.save()
+        selectedFoods.append((food, 100))
     }
 
     private func saveMeal() {

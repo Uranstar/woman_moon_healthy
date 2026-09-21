@@ -30,6 +30,9 @@ struct WomenMoonApp: App {
                 .task {
                     // 磁盘存储不可用时把原因交给 UI，让用户知道此刻记的数据不会被保存
                     appState.storageWarning = storage.warning
+
+                    // 首次启动时把内置食材库写入 SwiftData，否则「食材库」始终为空
+                    FoodSeeder.seedIfNeeded(modelContext: storage.container.mainContext)
                 }
         }
     }
